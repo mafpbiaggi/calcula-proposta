@@ -2,6 +2,10 @@
 
 Aplicação web para simulação e cálculo de propostas de consórcio. O sistema recebe os dados do cliente, calcula o valor da proposta com base no percentual pago sobre o bem e na data de encerramento do grupo, registra cada simulação no banco de dados e exibe o resultado formatado em reais.
 
+  > **Importante:**  
+  > Desenvolvido para atender uma demanda real de um cliente, este projeto foi integrado a um ambiente WordPress em produção.
+  > O repositório documenta a versão adaptada para funcionar como uma aplicação web independente. 
+  
 ## Tecnologias
 
 - **PHP 8.3** com Apache
@@ -24,8 +28,8 @@ calcula-proposta/
 │       ├── index.html
 │       ├── cadSimulacao.php
 │       └── assets/
-            ├── js
-            └── css
+|           ├── js
+|           └── css
 ```
 
 ## Configuração e execução
