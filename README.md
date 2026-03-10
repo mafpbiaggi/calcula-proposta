@@ -1,5 +1,4 @@
 # Simulador de Propostas
-
 Aplicação web para simulação e cálculo de propostas de consórcio. O sistema recebe os dados do cliente, calcula o valor da proposta com base no percentual pago sobre o bem e na data de encerramento do grupo, registra cada simulação no banco de dados e exibe o resultado formatado em reais.
 
   > **Importante:**  
@@ -7,14 +6,12 @@ Aplicação web para simulação e cálculo de propostas de consórcio. O sistem
   > O repositório documenta a versão adaptada para funcionar como uma aplicação web independente. 
   
 ## Tecnologias
-
 - **PHP 8.3** com Apache
 - **MariaDB 12.2**
 - **Docker** e **Docker Compose**
 - **HTML5 / CSS3 / JavaScript** (com Moment.js para manipulação de datas)
 
 ## Estrutura do projeto
-
 ```
 calcula-proposta/
 ├── app/
@@ -32,24 +29,34 @@ calcula-proposta/
 |           └── css
 ```
 
+## Lógica de cálculo
+O valor da proposta é calculado sobre o subtotal (`valor do bem × percentual pago / 100`). O subtotal mínimo aceito é R$ 7.000,00. O multiplicador aplicado sobre o subtotal varia de acordo com a data de encerramento do grupo:
+
+| Encerramento do grupo     | Multiplicador |
+|---------------------------|---------------|
+| Até 30/06/2025            | 40%           |
+| 01/07/2025 a 30/06/2026   | 33,33%        |
+| 01/07/2026 a 30/06/2027   | 30%           |
+| 01/07/2027 a 30/06/2028   | 27%           |
+| 01/07/2028 a 30/06/2029   | 24%           |
+| 01/07/2029 a 30/06/2031   | 20%           |
+| A partir de 01/07/2031    | 13%           |
+
 ## Configuração e execução
 
 ### Pré-requisitos
-
 - Docker
 - Docker Compose
 
 ### Passos
 
 **1. Clone o repositório**
-
 ```bash
 git clone https://github.com/mafpbiaggi/calcula-proposta.git
 cd calcula-proposta
 ```
 
 **2. Configure as variáveis de ambiente**
-
 Copie o arquivo de exemplo e preencha os valores:
 
 ```bash
@@ -60,7 +67,8 @@ Edite o arquivo `app/docker/.env` com os dados do seu ambiente:
 
 ```env
 MYSQL_ROOT_PASSWORD=sua_senha_root
-MYSQL_DATABASE=db_calcula_proposta # Nome do container de banco de dados
+MYSQL_HOST=db_calcula_proposta # Nome do container de banco de dados
+MYSQL_DATABASE=
 MYSQL_USER=usuario
 MYSQL_PASSWORD=senha
 MYSQL_PORT=3306
@@ -69,28 +77,22 @@ PORT_MAPPING=8080
 ```
 
 **3. Suba os containers**
-
 ```bash
 cd app/docker
 docker compose up -d --build
 ```
 
 **4. Crie a tabela no banco de dados**
-
 ```bash
 docker cp app/config/schema.sql db_calcula_proposta:/var/lib/mysql
 docker exec -i db_calcula_proposta bash -c 'mariadb -u$MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE < /var/lib/mysql/schema.sql'
 ```
 
 **5. Acesse a aplicação**
-
 Abra o navegador em `http://localhost:8080` (ou a porta definida em `PORT_MAPPING`).
 
 ## Dados da Equipe
-
 **Nome**: Marco Aurélio Biaggi ([@mafpbiaggi](https://github.com/mafpbiaggi))  
-**E-mail**: mafpbiaggi@gmail.com
 
 ## Licença
-
 Este projeto está licenciado sob a [MIT License](LICENSE).
