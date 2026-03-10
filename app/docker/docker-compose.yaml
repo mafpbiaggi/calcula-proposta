@@ -1,0 +1,37 @@
+networks:
+  calcula_proposta:
+    name: calcula_proposta
+
+services:
+  db_calcula_proposta:
+    image: mariadb:12.2
+    container_name: db_calcula_proposta
+    environment:
+      - TZ=America/Sao_Paulo
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - ${ROOT_DIR}/database:/var/lib/mysql
+    restart: always
+    networks:
+      - calcula_proposta
+
+  app_calcula_proposta:
+    image: calcula-proposta-app:1.0
+    build:
+      context: ${BUILD_CONTEXT}
+      dockerfile: Dockerfile
+    container_name: app_calcula_proposta
+    env_file:
+      - .env
+    volumes:
+      - ${ROOT_DIR}/app:/var/www/html
+    ports:
+      - "${PORT_MAPPING}:80"
+    restart: always
+    networks:
+      - calcula_proposta
+    depends_on:
+      - db_calcula_proposta

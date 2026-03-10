@@ -1,0 +1,13 @@
+.calc-button{
+    border-radius: 10px;
+    font-weight: 600;
+    color:#283B4A;
+}
+
+.calc-button:hover{
+    color:#FABC07
+}
+
+#labelResult{
+    margin-left: 30px;
+}
