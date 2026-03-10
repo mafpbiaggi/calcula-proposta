@@ -1,3 +1,5 @@
-# .gitignore
-
+# Ignora variáveis de ambiente e dados sensíveis
 .env
+
+# Ignora diretório de retenção de banco de dados
+/database/
